@@ -8,19 +8,20 @@ namespace DeveloperSample.Container
     public class Container
     {
         public Type _interface;
-        public object _instance = new();
+        public Type _instance;
 
         public void Bind(Type interfaceType, Type implementationType)
         {
             _interface = interfaceType;
-            _instance = Activator.CreateInstance(implementationType);
+            _instance = implementationType;
         }
 
         public T Get<T>()
         {
+            object res = Activator.CreateInstance(_instance);
             if (_interface == typeof(T))
             {
-                return (T)_instance;
+                return (T)res;
             }
             else
             {
