@@ -20,12 +20,11 @@ namespace DeveloperSample.ClassRefactoring
     public class Swallow
     {
         public SwallowType Type { get; }
-        public SwallowLoad Load { get; private set; }
+        public SwallowLoad Load { get; private set; } = SwallowLoad.None;
 
         public Swallow(SwallowType swallowType)
         {
             Type = swallowType;
-            Load = SwallowLoad.None;
         }
 
         public void ApplyLoad(SwallowLoad load)
