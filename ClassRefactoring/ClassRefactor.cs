@@ -4,12 +4,12 @@ namespace DeveloperSample.ClassRefactoring
 {
     public enum SwallowType
     {
-        African = 18, European = 16
+        African = 22, European = 20
     }
 
     public enum SwallowLoad
     {
-        None = 4, Coconut = 0
+        None = 0, Coconut = 4
     }
 
     public class SwallowFactory
@@ -34,7 +34,7 @@ namespace DeveloperSample.ClassRefactoring
 
         public double GetAirspeedVelocity()
         {
-            return (int)Type + (int)Load;
+            return (int)Type - (int)Load;
         }
     }
 }
