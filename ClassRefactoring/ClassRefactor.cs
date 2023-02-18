@@ -1,40 +1,41 @@
 using System;
+using System.Reflection;
 
 namespace DeveloperSample.ClassRefactoring
 {
-    public enum SwallowType
+    public interface ISwallowInterface
     {
-        African = 22, European = 20
+        int getUnladenSpeed();
     }
 
-    public enum SwallowLoad
+    public interface ILoadInterface
     {
-        None = 0, Coconut = 4
-    }
-
-    public class SwallowFactory
-    {
-        public Swallow GetSwallow(SwallowType swallowType) => new Swallow(swallowType);
+        int getLadingPenalty();
     }
 
     public class Swallow
     {
-        public SwallowType Type { get; }
-        public SwallowLoad Load { get; private set; } = SwallowLoad.None;
+        public ISwallowInterface Type { get; }
+        public ILoadInterface Load { get; private set; }
 
-        public Swallow(SwallowType swallowType)
+        public Swallow(Type swallowType, Type swallowLoad)
         {
-            Type = swallowType;
-        }
+            if (!typeof(ISwallowInterface).IsAssignableFrom(swallowType))
+            {
+                throw new ArgumentException(nameof(swallowType), $"Is of the wrong type. This should implement the ISwallowInterface.");
+            }
+            if (!typeof(ILoadInterface).IsAssignableFrom(swallowLoad))
+            {
+                throw new ArgumentException(nameof(swallowLoad), $"Is of the wrong type. This should implement the ILoadInterface.");
+            }
 
-        public void ApplyLoad(SwallowLoad load)
-        {
-            Load = load;
+            Type = (ISwallowInterface)Activator.CreateInstance(swallowType);
+            Load = (ILoadInterface)Activator.CreateInstance(swallowLoad);
         }
 
         public double GetAirspeedVelocity()
         {
-            return (int)Type - (int)Load;
+            return Type.getUnladenSpeed() - Load.getLadingPenalty();
         }
     }
 }
