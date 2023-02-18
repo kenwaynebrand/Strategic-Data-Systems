@@ -23,17 +23,6 @@ namespace DeveloperSample.Syncing
             var list = bag.ToList();
             return list;
         }
-        
-        public string update(int a, string b)
-        {
-            return b;
-        }
-
-
-        private void test(int t1, string t2, bool t3, string t4)
-        {
-
-        }
 
         public Dictionary<int, string> InitializeDictionary(Func<int, string> getItem)
         {
@@ -41,12 +30,13 @@ namespace DeveloperSample.Syncing
 
             var concurrentDictionary = new ConcurrentDictionary<int, string>();
             var threads = Enumerable.Range(0, 3)
-                .Select(i => new Thread(() => {
+                .Select(i => new Thread(() =>
+                {
                     foreach (var item in itemsToInitialize)
                     {
-                        lock (concurrentDictionary)
+                        if (concurrentDictionary.TryAdd(item, item.ToString()))
                         {
-                            concurrentDictionary.AddOrUpdate(item, getItem, (_, s) => s);
+                            getItem.Invoke(item);
                         }
                     }
                 }))
