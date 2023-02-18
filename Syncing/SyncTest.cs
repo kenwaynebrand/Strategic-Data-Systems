@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Xunit;
+using Xunit.Sdk;
 
 namespace DeveloperSample.Syncing
 {
@@ -20,19 +21,10 @@ namespace DeveloperSample.Syncing
         {
             var debug = new SyncDebug();
             var count = 0;
-            int thread = 0;
             var dictionary = debug.InitializeDictionary(i =>
             {
-                thread++;
-                var m = thread % 3;
-                if (m == 0)
-                {
-                    Interlocked.Increment(ref count);
-                    thread = 0;
-                }
-
                 Thread.Sleep(1);
-
+                Interlocked.Increment(ref count);
                 return i.ToString();
             });
 
