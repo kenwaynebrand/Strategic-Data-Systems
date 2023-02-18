@@ -7,22 +7,36 @@ namespace DeveloperSample.ClassRefactoring
 
     internal class AfricanSwallow : ISwallowInterface
     {
-        public int getUnladenSpeed() { return 22; }
+        public int Speed { get { return 22; } }
     }
 
     internal class EuropeanSwallow : ISwallowInterface
     {
-        public int getUnladenSpeed() { return 20; }
+        public int Speed { get { return 20; } }
     }
 
+    internal class LighterThanAirSwallow : ISwallowInterface
+    {
+        public int Speed { get { return -10; } }
+    }
+
+    internal class WeightlessSwallow : ISwallowInterface
+    {
+        public int Speed { get { return 0; } }
+    }
     internal class CoconutLoad : ILoadInterface
     {
-        public int getLadingPenalty() { return 4; }
+        public int Penalty { get { return 4; } }
     }
 
     internal class NoLoad : ILoadInterface
     {
-        public int getLadingPenalty() { return 0; }
+        public int Penalty { get { return 0; } }
+    }
+
+    internal class LighterThanAirLoad : ILoadInterface
+    {
+        public int Penalty { get { return -5; } }
     }
 
     public class ClassRefactorTest
@@ -66,6 +80,24 @@ namespace DeveloperSample.ClassRefactoring
         public void WrongLoadType()
         {
             Assert.Throws<ArgumentException>(() =>  new Swallow(typeof(EuropeanSwallow), typeof(EuropeanSwallow)));
+        }
+
+        [Fact]
+        public void BadSwallowSpeedZeroType()
+        {
+            Assert.Throws<ArgumentException>(() => new Swallow(typeof(WeightlessSwallow), typeof(CoconutLoad)));
+        }
+
+        [Fact]
+        public void BadSwallowSpeedNegativeType()
+        {
+            Assert.Throws<ArgumentException>(() => new Swallow(typeof(LighterThanAirSwallow), typeof(CoconutLoad)));
+        }
+
+        [Fact]
+        public void BadSwallowLoadType()
+        {
+            Assert.Throws<ArgumentException>(() => new Swallow(typeof(EuropeanSwallow), typeof(LighterThanAirLoad)));
         }
     }
 }
