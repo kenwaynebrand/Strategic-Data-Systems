@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -16,13 +17,22 @@ namespace DeveloperSample.Syncing
             var bag = new ConcurrentBag<string>();
             Parallel.ForEach(items, async i =>
             {
-                var r = await Task.Run(() => i).ConfigureAwait(false) ;
-                
-                bag.Add(r);
+                var r = Task.Run(() => i).ConfigureAwait(false);
+                bag.Add(r.GetAwaiter().GetResult());
             });
-            while(bag.Count < items.Count()) { Task.Delay(100).Wait(); }
             var list = bag.ToList();
             return list;
+        }
+        
+        public string update(int a, string b)
+        {
+            return b;
+        }
+
+
+        private void test(int t1, string t2, bool t3, string t4)
+        {
+
         }
 
         public Dictionary<int, string> InitializeDictionary(Func<int, string> getItem)
@@ -34,7 +44,10 @@ namespace DeveloperSample.Syncing
                 .Select(i => new Thread(() => {
                     foreach (var item in itemsToInitialize)
                     {
-                        concurrentDictionary.AddOrUpdate(item, getItem, (_, s) => s);
+                        lock (concurrentDictionary)
+                        {
+                            concurrentDictionary.AddOrUpdate(item, getItem, (_, s) => s);
+                        }
                     }
                 }))
                 .ToList();
@@ -47,6 +60,7 @@ namespace DeveloperSample.Syncing
             {
                 thread.Join();
             }
+
 
             return concurrentDictionary.ToDictionary(kv => kv.Key, kv => kv.Value);
         }
