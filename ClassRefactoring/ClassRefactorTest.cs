@@ -45,59 +45,55 @@ namespace DeveloperSample.ClassRefactoring
         [Fact]
         public void AfricanSwallowHasCorrectSpeed()
         {
-            var swallow = new Swallow(typeof(AfricanSwallow), typeof(NoLoad));
-            Assert.Equal(22, swallow.GetAirspeedVelocity());
+            AfricanSwallow swallow = new();
+            NoLoad load = new();
+            var Swallow = new Swallow(swallow, load);
+            Assert.Equal(22, Swallow.GetAirspeedVelocity());
         }
 
         [Fact]
         public void LadenAfricanSwallowHasCorrectSpeed()
         {
-            var swallow = new Swallow(typeof(AfricanSwallow), typeof(CoconutLoad));
-            Assert.Equal(18, swallow.GetAirspeedVelocity());
+            AfricanSwallow swallow = new();
+            CoconutLoad load = new();
+            var Swallow = new Swallow(swallow, load);
+            Assert.Equal(18, Swallow.GetAirspeedVelocity());
         }
 
         [Fact]
         public void EuropeanSwallowHasCorrectSpeed()
         {
-            var swallow = new Swallow(typeof(EuropeanSwallow), typeof(NoLoad));
-            Assert.Equal(20, swallow.GetAirspeedVelocity());
+            EuropeanSwallow swallow = new();
+            NoLoad load = new();
+            var Swallow = new Swallow(swallow, load);
+            Assert.Equal(20, Swallow.GetAirspeedVelocity());
         }
 
         [Fact]
         public void LadenEuropeanSwallowHasCorrectSpeed()
         {
-            var swallow = new Swallow(typeof(EuropeanSwallow), typeof(CoconutLoad));
-            Assert.Equal(16, swallow.GetAirspeedVelocity());
-        }
-
-        [Fact]
-        public void WrongSwallowType()
-        {
-            Assert.Throws<ArgumentException>(() => new Swallow(typeof(CoconutLoad), typeof(CoconutLoad)));
-        }
-
-        [Fact]
-        public void WrongLoadType()
-        {
-            Assert.Throws<ArgumentException>(() =>  new Swallow(typeof(EuropeanSwallow), typeof(EuropeanSwallow)));
+            EuropeanSwallow swallow = new();
+            CoconutLoad load = new();
+            var Swallow = new Swallow(swallow, load);
+            Assert.Equal(16, Swallow.GetAirspeedVelocity());
         }
 
         [Fact]
         public void BadSwallowSpeedZeroType()
         {
-            Assert.Throws<ArgumentException>(() => new Swallow(typeof(WeightlessSwallow), typeof(CoconutLoad)));
+            Assert.Throws<ArgumentException>(() => new WeightlessSwallow());
         }
 
         [Fact]
         public void BadSwallowSpeedNegativeType()
         {
-            Assert.Throws<ArgumentException>(() => new Swallow(typeof(LighterThanAirSwallow), typeof(CoconutLoad)));
+            Assert.Throws<ArgumentException>(() => new LighterThanAirSwallow());
         }
 
         [Fact]
         public void BadSwallowLoadType()
         {
-            Assert.Throws<ArgumentException>(() => new Swallow(typeof(EuropeanSwallow), typeof(LighterThanAirLoad)));
+            Assert.Throws<ArgumentException>(() => new LighterThanAirLoad());
         }
     }
 }
