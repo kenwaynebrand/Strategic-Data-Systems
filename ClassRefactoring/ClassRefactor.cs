@@ -4,20 +4,49 @@ using System.Reflection;
 
 namespace DeveloperSample.ClassRefactoring
 {
-    public interface ISwallowInterface
+    internal interface ISwallowInterface
     {
         int Speed { get; }
     }
 
-    public interface ILoadInterface
+    internal interface ILoadInterface
     {
         int Penalty { get; }
     }
 
+    public class swallowBase : ISwallowInterface
+    {
+        public swallowBase()
+        {
+            if (Speed <= 0)
+            {
+                throw new ArgumentException("Chile Swallow Class was defined with an incorrect Speed parameter. Speed must by greater than zero.");
+            }
+        }
+
+        public virtual int Speed { get; }
+            
+    }
+
+    public class loadBase : ILoadInterface
+    {
+        public loadBase()
+        {
+            if (Penalty < 0)
+            {
+                throw new ArgumentException("Child Load Class was defined with an incorrect Penalty parameter. Penalty must by greater than or equal to zero.");
+            }
+        }
+
+        public virtual int Penalty { get; }
+
+    }
+
+
     public class Swallow
     {
-        public ISwallowInterface Type { get; }
-        public ILoadInterface Load { get; private set; }
+        internal ISwallowInterface Type { get; }
+        internal ILoadInterface Load { get; private set; }
 
         public Swallow(Type swallowType, Type swallowLoad)
         {
@@ -30,15 +59,9 @@ namespace DeveloperSample.ClassRefactoring
                 throw new ArgumentException(nameof(swallowLoad), $" Is of the wrong type. This should implement the ILoadInterface.");
             }
             Type = (ISwallowInterface)Activator.CreateInstance(swallowType);
-            if (Type.Speed <= 0)
-            {
-                throw new ArgumentException(nameof(swallowType), $" was created with an incorrect Speed parameter. Speed must by greater than zero.");
-            }
+
             Load = (ILoadInterface)Activator.CreateInstance(swallowLoad);
-            if (Load.Penalty < 0)
-            {
-                throw new ArgumentException(nameof(swallowLoad), $" was created with an incorrect Penalty parameter. Penalty must by greater than or equal to zero.");
-            }
+
         }
 
         public double GetAirspeedVelocity()
