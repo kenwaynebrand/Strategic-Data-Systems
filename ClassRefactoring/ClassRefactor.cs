@@ -20,7 +20,7 @@ namespace DeveloperSample.ClassRefactoring
         {
             if (Speed <= 0)
             {
-                throw new ArgumentException("Chile Swallow Class was defined with an incorrect Speed parameter. Speed must by greater than zero.");
+                throw new ArgumentException("Child Swallow Class was defined with an incorrect Speed parameter. Speed must by greater than zero.");
             }
         }
 
@@ -48,20 +48,10 @@ namespace DeveloperSample.ClassRefactoring
         internal ISwallowInterface Type { get; }
         internal ILoadInterface Load { get; private set; }
 
-        public Swallow(Type swallowType, Type swallowLoad)
+        public Swallow(swallowBase swallowType, loadBase swallowLoad)
         {
-            if (!typeof(ISwallowInterface).IsAssignableFrom(swallowType))
-            {
-                throw new ArgumentException(nameof(swallowType), $" Is of the wrong type. This should implement the ISwallowInterface.");
-            }
-            if (!typeof(ILoadInterface).IsAssignableFrom(swallowLoad))
-            {
-                throw new ArgumentException(nameof(swallowLoad), $" Is of the wrong type. This should implement the ILoadInterface.");
-            }
-            Type = (ISwallowInterface)Activator.CreateInstance(swallowType);
-
-            Load = (ILoadInterface)Activator.CreateInstance(swallowLoad);
-
+            Type = swallowType;
+            Load = swallowLoad;
         }
 
         public double GetAirspeedVelocity()
