@@ -46,7 +46,7 @@ namespace DeveloperSample.ClassRefactoring
     public class Swallow
     {
         internal ISwallowInterface Type { get; }
-        internal ILoadInterface Load { get; private set; }
+        internal ILoadInterface Load { get; }
 
         public Swallow(swallowBase swallowType, loadBase swallowLoad)
         {
