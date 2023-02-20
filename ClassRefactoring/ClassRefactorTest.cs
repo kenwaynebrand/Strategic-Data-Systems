@@ -5,38 +5,38 @@ namespace DeveloperSample.ClassRefactoring
 {
 
 
-    internal class AfricanSwallow : ISwallowInterface
+    internal class AfricanSwallow : swallowBase
     {
-        public int Speed { get { return 22; } }
+        public override int Speed { get { return 22; } }
     }
 
-    internal class EuropeanSwallow : ISwallowInterface
+    internal class EuropeanSwallow : swallowBase
     {
-        public int Speed { get { return 20; } }
+        public override int Speed { get { return 20; } }
     }
 
-    internal class LighterThanAirSwallow : ISwallowInterface
+    internal class LighterThanAirSwallow : swallowBase
     {
-        public int Speed { get { return -10; } }
+        public override int Speed { get { return -10; } }
     }
 
-    internal class WeightlessSwallow : ISwallowInterface
+    internal class WeightlessSwallow : swallowBase
     {
-        public int Speed { get { return 0; } }
+        public override int Speed { get { return 0; } }
     }
-    internal class CoconutLoad : ILoadInterface
+    internal class CoconutLoad : loadBase
     {
-        public int Penalty { get { return 4; } }
-    }
-
-    internal class NoLoad : ILoadInterface
-    {
-        public int Penalty { get { return 0; } }
+        public override int Penalty { get { return 4; } }
     }
 
-    internal class LighterThanAirLoad : ILoadInterface
+    internal class NoLoad : loadBase
     {
-        public int Penalty { get { return -5; } }
+        public override int Penalty { get { return 0; } }
+    }
+
+    internal class LighterThanAirLoad : loadBase
+    {
+        public override int Penalty { get { return -5; } }
     }
 
     public class ClassRefactorTest
